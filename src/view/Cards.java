@@ -1,4 +1,4 @@
-package view;
+package application;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,18 +11,17 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 
-public class CardsPlace extends FlowPane {
+public class Cards extends FlowPane {
 	
 	RadialGradient shadeCenter = new RadialGradient(
 			 0, 0, 0.5, 0.5, 1, true, CycleMethod.NO_CYCLE,
-           new Stop(1, Color.BLACK),
-           new Stop(0, Color.GRAY)
-   );
-	
+          new Stop(1, Color.BLACK),
+          new Stop(0, Color.GRAY)
+  );
 	BackgroundFill fillCenter = new BackgroundFill(
 			shadeCenter , CornerRadii.EMPTY, Insets.EMPTY);
-	
-	public CardsPlace() {
+
+	public Cards() {
 		setAlignment(Pos.TOP_CENTER);
 		setVgap(15);
 		setHgap(15);

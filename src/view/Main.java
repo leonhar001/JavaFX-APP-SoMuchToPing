@@ -1,9 +1,10 @@
-package view;
+package application;
 
 import java.io.IOException;
 import java.util.List;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -15,10 +16,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class MainScreen extends Application {
+
+public class Main extends Application {
 
 	RadialGradient shadeCenter = new RadialGradient(0, 0, 0.5, 0.5, 1, true, CycleMethod.NO_CYCLE,
 			new Stop(1, Color.BLACK), new Stop(0, Color.GRAY));
@@ -26,16 +29,20 @@ public class MainScreen extends Application {
 	BackgroundFill fillCenter = new BackgroundFill(shadeCenter, CornerRadii.EMPTY, Insets.EMPTY);
 
 	static final int max = 1000000;
-
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
 		BorderPane main = new BorderPane();
 		
-		CardsPlace cards = new CardsPlace();
-
+		Cards cards = new Cards();
+		
+		CardsContainer scrollPane = new CardsContainer(cards);
+		
 		Header header = new Header();
-
-		/* ADDICIONA AS CARDS QUE SERÃO "PINGADAS" */
+		
+		ObservableList<Screen> screenSizes = Screen.getScreens();
+		Double screenHeight = screenSizes.get(0).getBounds().getHeight();
+		Double screenWidth = screenSizes.get(0).getBounds().getWidth();
+		
 		header.getAddCardButton().setOnAction(e -> {
 			String input = header.getLink();
 			if (!input.isEmpty()) {
@@ -44,7 +51,6 @@ public class MainScreen extends Application {
 			}
 		});
 
-		/* CRIA UMA TASK CONCORRENTE PARA DAR CONTA DO METODO DE "PINGAR" */
 		header.getPingButton().setOnAction(e -> {
 
 			Task<Void> task = new Task<Void>() {
@@ -75,26 +81,29 @@ public class MainScreen extends Application {
 		header.getClearButton().setOnAction(e -> {
 			cards.getChildren().clear();
 		});
-		
+
 		header.getAddFromFileButton().setOnAction(e->{
 			LinksFromFile lff = new LinksFromFile();
 			List<String> links = lff.getLinksList();
 			links.stream().forEach(link -> cards.getChildren().add(new Card(link)));
 		});
-		
+
 		header.getCloseButton().setOnAction(e -> {
 			System.exit(0);
 		});
-		
+
 		header.getMinimizeButton().setOnAction(e -> {
 			primaryStage.setIconified(true);
 		});
+		header.getMaximizeButton().setOnAction(e -> {
+			primaryStage.setFullScreen(true);
+		});
 
-		main.setCenter(cards);
+		main.setCenter(scrollPane);
 		main.setTop(header);
 
-		Scene scene = new Scene(main, 1280, 700);
-		//Scene scene = new Scene(main);
+		Scene scene = new Scene(main, screenWidth*0.8, screenHeight*0.8);
+
 		primaryStage.setScene(scene);
 		primaryStage.initStyle(StageStyle.UNDECORATED);
 		primaryStage.setTitle("SoMuchToPing");

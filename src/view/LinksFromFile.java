@@ -1,4 +1,4 @@
-package view;
+package application;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,14 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LinksFromFile {
-	
-	static private String path = "src/linkList.txt";
-	static private List<String> links = new ArrayList<>();
+
 	static private boolean isReaded = false;
-	
+	static private List<String> links = new ArrayList<>();
+	static private String path = "src/linkList.txt";
+
 	public LinksFromFile() {
 	}
-	
+
+	public List<String> getLinksList() {
+		if(!isReaded)
+			readFile();
+		List<String> toSend = links;
+		return toSend;
+	}
+
 	public void readFile() {
         BufferedReader br = null;
         try {
@@ -35,12 +42,5 @@ public class LinksFromFile {
           }
         isReaded = true;
 	}
-	
-	public List<String> getLinksList() {
-		if(!isReaded)
-			readFile();
-		List<String> toSend = links;
-		return toSend;
-	}
-	
+
 }
