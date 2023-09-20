@@ -1,5 +1,5 @@
 # JavaFX APP SoMuchToPing
- Application to easily monitoring offline links in a network.
+ Application to easily monitoring offline links.
 
 # News
  Project migrated to 24Seven Network Monitor, a new application with new look and features.
